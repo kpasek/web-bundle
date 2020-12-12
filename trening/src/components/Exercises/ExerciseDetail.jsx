@@ -23,7 +23,7 @@ export default class ExerciseDetail extends Component {
   };
   changeSeriesOrder = async (seriesId) => {
     let input = document.getElementById("series-order-" + seriesId);
-    await fetch("api/series/order", {
+    await fetch("https://api.kamilpasek.pl/api/series/order", {
       method: "POST",
       mode: "cors",
       cache: "no-cache",
@@ -37,7 +37,7 @@ export default class ExerciseDetail extends Component {
       }),
     });
     const seriesResponse = await fetch(
-      "api/series/exercise/" + this.state.exerciseId,
+      "https://api.kamilpasek.pl/api/series/exercise/" + this.state.exerciseId,
       {
         method: "GET",
         mode: "cors",
@@ -66,7 +66,7 @@ export default class ExerciseDetail extends Component {
   };
   async fetchData() {
     const seriesResponse = await fetch(
-      "api/series/exercise/" + this.state.exerciseId,
+      "https://api.kamilpasek.pl/api/series/exercise/" + this.state.exerciseId,
       {
         method: "GET",
         mode: "cors",
@@ -80,7 +80,7 @@ export default class ExerciseDetail extends Component {
 
     const series = await seriesResponse.json();
     const getExerciseSelectResponse = await fetch(
-      "api/exercises/part/" + this.state.partId,
+      "https://api.kamilpasek.pl/api/exercises/part/" + this.state.partId,
       {
         method: "GET",
         mode: "cors",
@@ -109,7 +109,7 @@ export default class ExerciseDetail extends Component {
     });
   }
   handleDeleteSeries = async (seriesId) => {
-    await fetch("api/series/" + seriesId, {
+    await fetch("https://api.kamilpasek.pl/api/series/" + seriesId, {
       method: "DELETE",
       mode: "cors",
       cache: "no-cache",
@@ -119,7 +119,7 @@ export default class ExerciseDetail extends Component {
       },
     });
     const seriesResponse = await fetch(
-      "api/series/exercise/" + this.state.exerciseId,
+      "https://api.kamilpasek.pl/api/series/exercise/" + this.state.exerciseId,
       {
         method: "GET",
         mode: "cors",
@@ -136,7 +136,7 @@ export default class ExerciseDetail extends Component {
     });
   };
   handleNewSeries = async () => {
-    const postResult = await fetch("api/series", {
+    const postResult = await fetch("https://api.kamilpasek.pl/api/series", {
       method: "POST",
       mode: "cors",
       cache: "no-cache",
@@ -247,26 +247,29 @@ export default class ExerciseDetail extends Component {
     await this.saveChanges(seriesId, editedSeries, seriesIndex);
   };
   async saveChanges(seriesId, editedSeries, seriesIndex) {
-    const putResult = await fetch("api/series/" + seriesId, {
-      method: "PUT",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        exerciseId: this.state.exerciseId,
-        seriesId: seriesId,
-        name: "",
-        order: editedSeries.order,
-        repeats: editedSeries.repeats,
-        load: editedSeries.load,
-        distance: editedSeries.distance,
-        time: editedSeries.time,
-        restTime: editedSeries.restTime,
-      }),
-    });
+    const putResult = await fetch(
+      "https://api.kamilpasek.pl/api/series/" + seriesId,
+      {
+        method: "PUT",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          exerciseId: this.state.exerciseId,
+          seriesId: seriesId,
+          name: "",
+          order: editedSeries.order,
+          repeats: editedSeries.repeats,
+          load: editedSeries.load,
+          distance: editedSeries.distance,
+          time: editedSeries.time,
+          restTime: editedSeries.restTime,
+        }),
+      }
+    );
 
     const newSeries = await putResult.json();
     this.state.series[seriesIndex] = newSeries;
@@ -305,27 +308,10 @@ export default class ExerciseDetail extends Component {
       ).value;
     }
 
-    const updateTask = fetch("api/exercises/" + this.state.exerciseId, {
-      method: "PUT",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        exerciseId: this.state.exerciseId,
-        name: newName,
-        partId: newPart,
-        typeId: newType,
-        description: newDescription,
-        public: this.state.public,
-      }),
-    });
-
-    if (this.props.training) {
-      const changeOrderTask = fetch("api/exercises/change-order", {
-        method: "POST",
+    const updateTask = fetch(
+      "https://api.kamilpasek.pl/api/exercises/" + this.state.exerciseId,
+      {
+        method: "PUT",
         mode: "cors",
         cache: "no-cache",
         credentials: "include",
@@ -333,11 +319,34 @@ export default class ExerciseDetail extends Component {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          trainingId: this.props.trainingId,
           exerciseId: this.state.exerciseId,
-          order: parseInt(newOrder),
+          name: newName,
+          partId: newPart,
+          typeId: newType,
+          description: newDescription,
+          public: this.state.public,
         }),
-      });
+      }
+    );
+
+    if (this.props.training) {
+      const changeOrderTask = fetch(
+        "https://api.kamilpasek.pl/api/exercises/change-order",
+        {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            trainingId: this.props.trainingId,
+            exerciseId: this.state.exerciseId,
+            order: parseInt(newOrder),
+          }),
+        }
+      );
       await changeOrderTask;
     }
 
@@ -374,15 +383,18 @@ export default class ExerciseDetail extends Component {
     const select = document.getElementById(
       "select-part-" + this.state.exerciseId
     );
-    const getResult = await fetch("api/exercises/part/" + select.value, {
-      method: "GET",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const getResult = await fetch(
+      "https://api.kamilpasek.pl/api/exercises/part/" + select.value,
+      {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const exercises = await getResult.json();
     this.setState({
       exerciseId: this.state.exerciseId,

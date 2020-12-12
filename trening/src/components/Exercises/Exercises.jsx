@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ExerciseDetail from "./ExerciseDetail";
-// cosnt exercisesResponse = await fetch("/api/exercises", {
+// cosnt exercisesResponse = await fetch("/https://api.kamilpasek.pl/api/exercises", {
 //   method: "GET",
 //   mode: "cors",
 //   cache: "no-cache",
@@ -32,33 +32,42 @@ export class Exercises extends Component {
     this.fetchData();
   }
   fetchData = async () => {
-    const exercisesResponse = await fetch("/api/exercises", {
-      method: "GET",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const responseParts = await fetch("api/exercises/parts", {
-      method: "GET",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const responseTypes = await fetch("api/exercises/types", {
-      method: "GET",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const exercisesResponse = await fetch(
+      "https://api.kamilpasek.pl/api/exercises",
+      {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const responseParts = await fetch(
+      "https://api.kamilpasek.pl/api/exercises/parts",
+      {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const responseTypes = await fetch(
+      "https://api.kamilpasek.pl/api/exercises/types",
+      {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const exercises = await exercisesResponse.json();
     const parts = await responseParts.json();
     const types = await responseTypes.json();
@@ -73,7 +82,7 @@ export class Exercises extends Component {
   };
 
   handleDeleteExercise = async (exerciseId, order) => {
-    await fetch("api/exercises/" + exerciseId, {
+    await fetch("https://api.kamilpasek.pl/api/exercises/" + exerciseId, {
       method: "DELETE",
       mode: "cors",
       cache: "no-cache",
@@ -117,28 +126,34 @@ export class Exercises extends Component {
     const part = document.getElementById("select-exercise-part").value;
 
     if (part === "all") {
-      const exercisesResponse = await fetch("/api/exercises", {
-        method: "GET",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const exercisesResponse = await fetch(
+        "https://api.kamilpasek.pl/api/exercises",
+        {
+          method: "GET",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       this.setState({
         exercises: await exercisesResponse.json(),
       });
     } else {
-      const responseExercise = await fetch("api/exercises/part/" + part, {
-        method: "GET",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const responseExercise = await fetch(
+        "https://api.kamilpasek.pl/api/exercises/part/" + part,
+        {
+          method: "GET",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       this.setState({
         exercises: await responseExercise.json(),
       });
@@ -171,7 +186,7 @@ export class Exercises extends Component {
     const description = document.getElementById("new-exercise-description")
       .value;
 
-    await fetch("api/exercises", {
+    await fetch("https://api.kamilpasek.pl/api/exercises", {
       method: "POST",
       mode: "cors",
       cache: "no-cache",

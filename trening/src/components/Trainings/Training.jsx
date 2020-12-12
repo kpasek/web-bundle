@@ -3,6 +3,7 @@ import "../../css/fontello.css";
 import "../../css/fontello-codes.css";
 import "../../css/fontello-embedded.css";
 import "../../css/fontello-ie7-codes.css";
+import "../../css/bootstrap.css";
 import TrainingDetails from "./TrainingDetails";
 import TrainingInfo from "./TrainingInfo";
 

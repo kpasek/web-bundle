@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { SExercise } from "./SExercise";
+import "../css/bootstrap.css";
 
 export class STrainings extends Component {
   static displayName = STrainings.name;

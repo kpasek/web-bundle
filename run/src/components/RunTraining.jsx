@@ -5,7 +5,7 @@ import "../css/fontello.css";
 import "../css/fontello-codes.css";
 import "../css/fontello-embedded.css";
 import "../css/fontello-ie7-codes.css";
-
+import "../css/bootstrap.css";
 export class RunTraining extends Component {
   static displayName = RunTraining.name;
 
